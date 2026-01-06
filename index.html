@@ -1,23 +1,397 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>Home</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <!--
-      Need a visual blank slate?
-      Remove all code in `styles.css`!
-    -->
-    <link rel="stylesheet" href="styles.css" />
-    <script type="module" src="script.js"></script>
-  </head>
-  <body>
-    <nav>
-      <a href="/" aria-current="page">Home</a>
-      <a href="/page2.html">Other page</a>
-    </nav>
-    <main>
-      <h1>Home page</h1>
-    </main>
-  </body>
-</html>
+
+  <style>
+    /* 기본 스타일 재설정 */
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      line-height: 1.8; /* 가독성을 위해 행간 늘림 */
+      margin: 0;
+      padding: 0;
+      background: #f4f7f9; /* 부드러운 배경색 */
+      color: #333;
+      overflow-x: hidden; /* 가로 스크롤 방지 */
+    }
+    header, section, footer {
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 30px; /* 섹션별 패딩 증가 */
+      background: #fff;
+      border-radius: 12px; /* 모서리 부드럽게 */
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* 그림자 부드럽게 */
+      transition: all 0.3s ease-in-out; /* 부드러운 전환 효과 */
+    }
+    h1, h2, h3 {
+      color: #004aad; /* 메인 색상 유지 */
+      font-weight: 700;
+      line-height: 1.4;
+      margin-top: 0;
+    }
+    h1 { font-size: 2.2em; text-align: center; color: #004aad; }
+    h2 { font-size: 1.8em; border-bottom: 3px solid #e0eaff; padding-bottom: 10px; margin-top: 40px; }
+    h3 { font-size: 1.4em; color: #3b73c4; }
+    ul, ol { padding-left: 25px; margin-bottom: 20px; }
+    li { margin-bottom: 10px; font-weight: 400; }
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.95em; }
+    th, td { border: 1px solid #e9ecef; padding: 12px; text-align: left; vertical-align: middle; }
+    th { background: #f0f8ff; color: #1e3a8a; font-weight: 600; text-align: center; }
+    tr:nth-child(even) { background-color: #f9f9f9; }
+    a { color: #0070f3; text-decoration: none; transition: color 0.3s ease; }
+    a:hover { text-decoration: underline; color: #005bb5; }
+    strong { font-weight: 600; color: #1e3a8a; }
+
+    /* CTA 버튼 (산부인과 테마에 맞게 색상 변경) */
+    .btn-cta {
+      display: inline-block;
+      padding: 14px 30px;
+      background: #ff6f91; /* 부드러운 핑크색 */
+      color: #fff;
+      font-weight: 700;
+      border-radius: 30px;
+      box-shadow: 0 6px 15px rgba(255, 111, 145, 0.4);
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      text-align: center;
+      margin-top: 20px;
+      cursor: pointer;
+      border: none;
+      font-size: 1.1em;
+    }
+    .btn-cta:hover {
+      background: #e65a7f;
+      transform: translateY(-2px);
+    }
+
+    /* 네비게이션 스타일 */
+    nav {
+      max-width: 900px;
+      margin: 20px auto;
+      background: #fff;
+      border-radius: 12px;
+      padding: 10px 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    nav ul {
+      list-style-type: none;
+      display: flex;
+      justify-content: space-between;
+      padding: 0;
+      margin: 0;
+      flex-wrap: wrap;
+    }
+    nav li { margin: 5px 10px; }
+    nav a {
+      font-weight: 500;
+      color: #555;
+      padding: 5px;
+      display: block;
+      transition: color 0.3s ease;
+    }
+    nav a:hover { color: #ff6f91; text-decoration: none; }
+
+    /* 폼 스타일 */
+    form {
+      background: #fdfdfd;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+    }
+    label { display: block; margin-bottom: 8px; font-weight: 500; color: #444; }
+    input[type="text"], input[type="tel"], select, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 18px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      box-sizing: border-box;
+      font-size: 1em;
+      transition: border-color 0.3s ease;
+    }
+    input[type="text"]:focus, input[type="tel"]:focus, select:focus, textarea:focus {
+      border-color: #ff6f91;
+      outline: none;
+    }
+    input[type="checkbox"] { margin-right: 10px; }
+    .checkbox-group label { display: inline-block; margin-right: 20px; font-weight: 400; }
+
+    /* 앵커 스타일 (헤더 높이 고려) */
+    .anchor {
+      display: block;
+      position: relative;
+      top: -100px;
+      visibility: hidden;
+    }
+
+    /* 그래프 스타일 (Placeholder) */
+    .graph-container {
+      margin: 30px 0;
+      text-align: center;
+      background: #f7f9fc;
+      border-radius: 8px;
+      padding: 20px;
+    }
+    .graph-visual {
+      height: 200px;
+      background: linear-gradient(to right, #e0eaff 50%, #f0f8ff 50%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      position: relative;
+    }
+    .bar {
+      width: 15%;
+      background: #ff6f91;
+      margin: 0 10px;
+      border-radius: 4px;
+    }
+    .bar-label { font-size: 0.9em; margin-top: 5px; color: #555; }
+
+    /* 반응형 디자인 */
+    @media(max-width: 768px) {
+      body { padding: 10px; }
+      header, section, footer, nav { margin: 10px auto; padding: 15px; }
+      nav ul { flex-direction: column; }
+      nav li { margin: 5px 0; border-bottom: 1px solid #eee; }
+      nav a { padding: 10px; }
+      h1 { font-size: 1.8em; }
+      h2 { font-size: 1.5em; }
+      .btn-cta { width: 100%; padding: 15px 0; font-size: 1em; }
+      table, th, td { display: block; width: 100%; box-sizing: border-box; }
+      th { text-align: right; border-bottom: none; }
+      td { border-top: none; text-align: right; }
+      tr { margin-bottom: 15px; display: block; border: 1px solid #e9ecef; border-radius: 8px; }
+      th:before { content: attr(data-label); float: left; font-weight: bold; }
+    }
+  </style>
+
+  <!-- Schema.org 마크업(JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "serviceType": "Insurance",
+    "provider": {
+      "@type": "Organization",
+      "name": "산부인과보험 비교 추천 서비스",
+      "url": "https://domain.com/insurance-guide",
+      "logo": "https://domain.com/logo.png"
+    },
+    "name": "산부인과보험 전문가 비교 분석 서비스",
+    "description": "2026년 최신 산부인과보험 가입 가이드. 태아보험, 어린이보험, 임산부보험 등 모든 정보를 비교 분석하여 맞춤형 추천을 제공합니다.",
+    "areaServed": {
+      "@type": "Country",
+      "name": "KR"
+    },
+    "url": "https://domain.com/insurance-guide",
+    "offers": {
+      "@type": "Offer",
+      "priceRange": "₩₩₩",
+      "priceSpecification": {
+        "@type": "PriceSpecification",
+        "minPrice": "30000",
+        "maxPrice": "100000",
+        "priceCurrency": "KRW"
+      }
+    }
+  }
+  </script>
+</head>
+
+<body>
+  <header>
+    <h1>2026년 산부인과보험 완벽 가이드: 태아보험, 임산부보험 추천 순위 및 가격 비교</h1>
+    <p>엄마와 아기를 위한 든든한 보장, 고위험 산모 및 다태아 보험 가입 전문가 상담</p>
+    <button class="btn-cta" onclick="location.href='#contact'">지금 1:1 무료 상담 신청</button>
+  </header>
+
+  <nav aria-label="페이지 내 이동">
+    <ul>
+      <li><a href="#intro">산부인과보험이란?</a></li>
+      <li><a href="#coverage">보장 내용 핵심 분석</a></li>
+      <li><a href="#comparison">상품 비교 & 추천 순위</a></li>
+      <li><a href="#selection-tips">가입 노하우 & 체크리스트</a></li>
+      <li><a href="#faq">자주 묻는 질문</a></li>
+      <li><a href="#contact">전문가 무료 상담</a></li>
+    </ul>
+  </nav>
+
+  <!-- 정보성 콘텐츠 섹션 시작 -->
+  <section id="intro">
+    <span id="intro-anchor" class="anchor"></span>
+    <h2>산부인과보험이란 무엇이며 왜 필요한가요?</h2>
+    <p>산부인과보험은 임신, 출산 과정에서 발생할 수 있는 다양한 위험에 대비하기 위한 보험 상품입니다. 흔히 <strong>태아보험</strong> 또는 <strong>어린이보험</strong>의 특약 형태로 가입되며, 임산부의 질병(고위험 산모)이나 신생아에게 발생할 수 있는 선천성 질환 및 인큐베이터 비용 등을 보장합니다. 최근 결혼 연령이 높아지면서 고위험 임신 비율이 증가하고 있어, 산부인과보험에 대한 관심이 더욱 높아지고 있습니다. 통계청 자료에 따르면 고위험 산모의 비율은 2010년 16%에서 2020년 23%로 지속적으로 증가하고 있습니다. 따라서 예기치 않은 상황에 대비하기 위한 든든한 보장책이 필수적입니다.</p>
+
+    <h3>고위험 임신과 산부인과보험의 필요성</h3>
+    <p>산부인과보험의 핵심은 <strong>고위험 임신</strong> 관련 보장입니다. 임신 중에는 임신성 당뇨, 임신중독증(자간전증), 조기 진통 등 다양한 합병증이 발생할 수 있습니다. 이러한 질환들은 산모와 태아 모두에게 심각한 위험을 초래할 수 있으며, 입원이나 추가 치료가 필요할 경우 의료비 부담이 크게 늘어납니다. 특히, 고위험 산모로 분류되면 일반적인 보험 가입이 제한되거나 보장 범위가 좁아질 수 있으므로, 임신 초기에 미리 대비하는 것이 중요합니다.</p>
+
+    <div class="graph-container">
+      <h3>고위험 임신 유형별 보험 가입 난이도 (2026년 기준)</h3>
+      <div class="graph-visual" style="align-items: flex-end;">
+        <div class="bar" style="height: 70%;"></div>
+        <div class="bar" style="height: 90%;"></div>
+        <div class="bar" style="height: 50%;"></div>
+      </div>
+      <div style="display: flex; justify-content: space-around; margin-top: 10px;">
+        <div class="bar-label">임신성 당뇨</div>
+        <div class="bar-label">임신중독증</div>
+        <div class="bar-label">고령 산모</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="coverage">
+    <span id="coverage-anchor" class="anchor"></span>
+    <h2>산부인과보험 핵심 보장 내용 분석: 2026년 기준</h2>
+    <p>산부인과보험의 보장 내용은 크게 두 가지로 나뉩니다. 첫째는 <strong>산모 보장</strong>, 둘째는 <strong>태아 보장</strong>입니다. 제대로 된 보장을 받기 위해서는 이 두 가지를 모두 꼼꼼히 체크해야 합니다. 특히 2026년 현재는 다태아 임신 증가 추세에 따라 다태아 보장에 대한 관심도 높습니다.</p>
+
+    <h3>산모 관련 보장: 고위험 임신 대비</h3>
+    <p><strong>임신/출산 관련 질환 입원/수술비:</strong> 임신 중이나 출산 직후 발생할 수 있는 합병증에 대한 입원 및 수술 비용을 보장합니다. 대표적으로 임신성 고혈압, 임신성 당뇨 등이 해당됩니다.</p>
+    <ul>
+      <li><strong>유산 및 조산 관련 보장:</strong> 유산 방지 입원 치료나 조산으로 인한 인큐베이터 사용 비용을 보장합니다.</li>
+      <li><strong>제왕절개 수술비:</strong> 최근 출산율 통계에서 제왕절개 비율이 높게 나타나고 있습니다. (약 50% 수준) 제왕절개 시 발생하는 비용을 보장하며, 선택 특약으로 보장 금액을 늘릴 수 있습니다.</li>
+      <li><strong>다태아(쌍둥이) 임신 추가 보장:</strong> 다태아는 고위험 임신으로 분류되어 산모에게 더 많은 위험이 따릅니다. 다태아 임신 시 발생하는 추가 비용을 보장하는 특약을 필히 확인해야 합니다.</li>
+    </ul>
+
+    <h3>태아 관련 보장: 신생아 선천성 질환 및 기타</h3>
+    <p>산부인과보험을 <strong>태아보험</strong>이라고 부르는 이유는 태아의 선천성 질환 보장이 가장 중요하기 때문입니다. 출생 시 발견되는 선천성 기형이나 질병에 대해 진단비 및 수술비를 보장합니다.</p>
+    <ul>
+      <li><strong>선천성 질환 보장:</strong> 구순구개열, 심장 기형, 쇄골 골절 등 출생 직후 발견되는 질환에 대한 진단비 및 치료비를 보장합니다.</li>
+      <li><strong>저체중 출산 및 인큐베이터 비용:</strong> 2.5kg 미만의 저체중으로 태어나거나, 조산으로 인해 인큐베이터를 사용해야 할 경우 발생하는 비용을 보장합니다. 이는 출산 후 의료비 지출에서 큰 비중을 차지하는 부분입니다.</li>
+      <li><strong>주산기 질환 보장:</strong> 출산 전후 발생하는 특정 질환에 대한 보장입니다.</li>
+    </ul>
+
+    <h3>핵심 키워드 분석: 평균, 금액, 예상 비용</h3>
+    <p>산부인과보험의 <strong>평균 금액</strong>은 가입 시기와 보장 범위에 따라 크게 달라집니다. 일반적으로 태아보험의 형태로 가입할 경우, <strong>월 3만원~5만원</strong> 선이 일반적이며, 특약 추가 여부에 따라 <strong>예상 비용</strong>이 달라집니다. <strong>저렴한곳</strong>을 찾는 것도 중요하지만, 보장 내용을 꼼꼼히 확인하여 필요한 보장을 놓치지 않는 것이 더 중요합니다.</p>
+    <p class="citation" style="font-size: 0.8em; color: #777; margin-top: 20px;">*함께 많이 찾는 키워드: 태아보험 가입 시기, 어린이보험 전환, 갱신형 vs 비갱신형, 태아보험 가격 비교</p>
+  </section>
+
+  <section id="comparison">
+    <span id="comparison-anchor" class="anchor"></span>
+    <h2>산부인과보험 비교 & 추천 순위: 2026년 가입 팁</h2>
+    <p>산부인과보험을 가입할 때는 단순히 <strong>순위</strong>나 <strong>추천</strong> 상품을 따르기보다, 자신의 임신 상태와 가족력에 맞는 보장 내용을 선택하는 것이 중요합니다. 특히 <strong>내돈내산 후기</strong>를 참고하여 실제 보장 사례를 확인하는 것도 좋은 방법입니다. 2026년 주요 보험사 상품을 비교 분석한 자료를 통해 최적의 선택을 할 수 있습니다.</p>
+
+    <h3>보험사별 산부인과보험(태아보험) 주요 상품 비교</h3>
+    <table>
+      <thead>
+        <tr>
+          <th data-label="보험사">보험사 (상품명)</th>
+          <th data-label="주요 특징">주요 특징</th>
+          <th data-label="보장 범위">보장 범위 (태아/산모)</th>
+          <th data-label="가격대">평균 금액 (월)</th>
+          <th data-label="추천 대상">추천 대상</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="보험사">A보험사 (맘편한 플랜)</td>
+          <td data-label="주요 특징"><strong>선천성 질환</strong> 보장 범위 넓음, <strong>고위험 산모</strong> 특약 강화</td>
+          <td data-label="보장 범위">태아: 선천성 기형, 저체중 인큐베이터 / 산모: 임신중독증, 조산</td>
+          <td data-label="가격대">4만 원 ~ 6만 원</td>
+          <td data-label="추천 대상">고령 임신이나 가족력 있는 산모</td>
+        </tr>
+        <tr>
+          <td data-label="보험사">B보험사 (행복한 출산 플랜)</td>
+          <td data-label="주요 특징"><strong>다태아</strong> 임신 특약 우수, 가입 시기 늦춰도 심사 유리</td>
+          <td data-label="보장 범위">태아: 인큐베이터 비용, 뇌성마비 보장 / 산모: 임신성 당뇨 보장</td>
+          <td data-label="가격대">3만 5천 원 ~ 5만 5천 원</td>
+          <td data-label="추천 대상">다태아 임신 또는 늦게 가입하는 경우</td>
+        </tr>
+        <tr>
+          <td data-label="보험사">C보험사 (아이사랑 특약)</td>
+          <td data-label="주요 특징">출산 후 <strong>어린이보험</strong> 전환 연계가 부드러움, <strong>저렴한곳</strong>으로 유명</td>
+          <td data-label="보장 범위">태아: 뇌질환, 소아암 진단비 / 산모: 유산 방지 입원비</td>
+          <td data-label="가격대">3만 원 ~ 4만 5천 원</td>
+          <td data-label="추천 대상">가성비 중시, 장기적인 어린이보험 고려</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="selection-tips">
+    <span id="selection-tips-anchor" class="anchor"></span>
+    <h2>산부인과보험 가입 노하우 및 체크리스트</h2>
+    <p>성공적인 산부인과보험 가입을 위한 필수적인 팁을 정리했습니다. <strong>가입 시기</strong>, <strong>갱신 여부</strong>, 그리고 <strong>면책 기간</strong> 등을 정확히 이해해야 불이익 없이 보장을 받을 수 있습니다.</p>
+
+    <h3>1. 가입 시기: 늦으면 보장이 안 될 수도 있습니다.</h3>
+    <p>산부인과보험(태아보험)은 일반적으로 임신 22주 이전에 가입해야 합니다. 22주가 넘어가면 <strong>선천성 질환</strong>이나 <strong>저체중 출산</strong> 관련 특약 가입이 불가능해집니다. 또한 임신 후 특정 질병(고위험 산모 진단)이 발견되면 가입 심사가 거절되거나 보장 범위가 제한될 수 있으므로, 임신 사실을 확인한 직후 가입을 고려하는 것이 좋습니다.</p>
+
+    <h3>2. 갱신형 vs 비갱신형 차이점 분석</h3>
+    <p><strong>비갱신형:</strong> 납입 기간 동안 보험료 변동 없이 정해진 기간 동안 보장받는 형태입니다. 초기 보험료는 높지만 장기적으로 볼 때 <strong>총 납입 금액</strong>이 저렴할 수 있습니다.</p>
+    <p><strong>갱신형:</strong> 일정 기간마다 보험료가 갱신되어 초기 보험료는 낮지만, 나이가 들거나 물가 상승에 따라 보험료가 오를 수 있습니다. 단기적인 보장(예: 출산 직후까지만)을 원한다면 고려해볼 수 있습니다.</p>
+
+    <h3>3. 가입 시 주의사항: 면책기간, 보장기간</h3>
+    <p><strong>면책 기간:</strong> 보험 가입 후 일정 기간 동안 보장받지 못하는 기간입니다. 산부인과보험은 가입 즉시 보장이 시작되는 경우가 많지만, 특정 특약에 대해서는 면책 기간이 적용될 수 있습니다.</p>
+    <p><strong>보장 기간:</strong> 산모 특약은 보통 출산 직후까지만 보장되며, 태아 특약은 출생 이후 어린이보험으로 전환되어 길게는 100세까지 보장됩니다. 보장 기간을 정확히 설정하는 것이 중요합니다.</p>
+
+    <h3>4. 공인된 정보 확인: 정부 지원 정책</h3>
+    <p>정부에서는 난임 부부 지원, 고위험 산모 관리 지원 등 다양한 정책을 운영하고 있습니다. 이러한 정부 지원 정책(예: 국민행복카드)과 보험 상품의 보장 내용을 비교하여 중복되거나 부족한 부분을 확인하는 것이 현명합니다. <a href="https://www.e-childcare.go.kr/main/main.jsp" target="_blank">아이사랑(육아포털)</a>, <a href="https://www.mohw.go.kr/react/index.jsp" target="_blank">보건복지부</a> 등 공인된 사이트를 통해 최신 정보를 확인하세요.</p>
+
+    <p class="citation" style="font-size: 0.8em; color: #777; margin-top: 20px;">*함께 많이 찾는 키워드: 태아보험 설계 방법, 보험료 절약 팁, 임신 중 보험 가입 제한, 산부인과보험 가입 순위</p>
+
+    <button class="btn-cta" onclick="location.href='#contact'">나만을 위한 맞춤 보험료 견적 받기</button>
+  </section>
+
+  <section id="faq">
+    <span id="faq-anchor" class="anchor"></span>
+    <h2>자주 묻는 질문(FAQ): 산부인과보험 궁금증 해소</h2>
+
+    <h3>Q1. 산부인과보험과 실비보험(실손의료보험)의 차이점은 무엇인가요?</h3>
+    <p>실비보험은 국민건강보험이 적용되지 않는 비급여 항목에 대해 보장하는 보험입니다. 그러나 실비보험은 임신, 출산 관련 질환에 대해서는 보장하지 않는 경우가 많습니다. 산부인과보험(태아보험)은 이 실비보험의 약점을 보완하여 임신/출산 관련 특정 질환과 신생아 선천성 질환 등을 집중 보장하는 상품입니다.</p>
+
+    <h3>Q2. 임신 중 이미 질병이 있는데 가입이 가능한가요?</h3>
+    <p>임신 중 질병(예: 임신성 당뇨)이 발생하면 보험사 심사가 매우 까다로워지거나 가입이 거절될 수 있습니다. 일부 보험사에서는 특정 질환에 대한 보장을 제외하거나 보험료 할증을 통해 가입을 허용하기도 합니다. 정확한 판단을 위해 전문가 상담이 필수적입니다.</p>
+
+    <h3>Q3. 다태아(쌍둥이)는 보험료가 두 배인가요?</h3>
+    <p>다태아는 한 번의 임신으로 두 명의 태아를 보장하므로, 태아보험 가입 시 보험료가 일반 임신보다 높게 책정될 수 있습니다. 보험사별로 다태아 가입 규정이 다르므로 꼼꼼한 비교가 필요합니다.</p>
+  </section>
+
+  <section id="contact">
+    <span id="contact-anchor" class="anchor"></span>
+    <h2>전문가 1:1 무료 상담 신청</h2>
+    <p>복잡하고 어려운 산부인과보험, 전문가와 상담하여 나에게 맞는 최적의 보장 설계와 <strong>저렴한곳</strong> 선택 팁을 받아보세요.</p>
+    <form action="/submit" method="POST" style="max-width:600px; margin:auto;">
+      <label for="name">이름<span style="color:red;">*</span></label><br />
+      <input type="text" id="name" name="name" required style="width:100%; padding:8px; margin-bottom:12px;" />
+
+      <label for="phone">연락처<span style="color:red;">*</span></label><br />
+      <input type="tel" id="phone" name="phone" required placeholder="010-1234-5678" pattern="[0-9\-]+" style="width:100%; padding:8px; margin-bottom:12px;" />
+
+      <label for="pregnancy-stage">임신 주수 (예: 12주차)<span style="color:red;">*</span></label><br />
+      <input type="text" id="pregnancy-stage" name="pregnancy_stage" required placeholder="예: 15주 3일" style="width:100%; padding:8px; margin-bottom:12px;" />
+
+      <label for="move-type">상담 희망 유형<span style="color:red;">*</span></label><br />
+      <select id="move-type" name="move_type" required style="width:100%; padding:8px; margin-bottom:12px;">
+        <option value="">선택하세요</option>
+        <option value="태아보험 신규 가입">태아보험 신규 가입</option>
+        <option value="기존 태아보험 점검/보완">기존 태아보험 점검/보완</option>
+        <option value="고위험 산모 보험 상담">고위험 산모 보험 상담</option>
+        <option value="다태아 보험 상담">다태아 보험 상담</option>
+        <option value="어린이보험 전환 상담">어린이보험 전환 상담</option>
+      </select>
+
+      <div class="checkbox-group" style="margin-bottom: 15px;">
+        <label>현재 임신 상태 (해당되는 항목 모두 체크)</label><br />
+        <input type="checkbox" id="condition1" name="condition1" value="고위험 산모 진단" /> <label for="condition1">고위험 산모 진단</label>
+        <input type="checkbox" id="condition2" name="condition2" value="다태아 임신" /> <label for="condition2">다태아 임신</label>
+        <input type="checkbox" id="condition3" name="condition3" value="난임 시술로 임신" /> <label for="condition3">난임 시술로 임신</label>
+      </div>
+
+      <label for="message">추가 문의 사항</label><br />
+      <textarea id="message" name="message" rows="4" style="width:100%; padding:8px; margin-bottom:12px;" placeholder="예: 원하는 보장 내용, 희망하는 보험료 수준 등"></textarea>
+
+      <button type="submit" class="btn-cta">무료 상담 신청 완료</button>
+    </form>
+  </section>
+
+  <footer>
+    <p>© 2026 산부인과보험 비교 추천 서비스. All Rights Reserved.</p>
+    <p>본 사이트는 보험 대리점의 광고이며, 계약 체결에 따른 이익 또는 손실은 계약자에게 귀속됩니다.</p>
+    <p>사업자 등록번호: 123-45-67890 | 고객센터: <a href="tel:0311234567">031-123-4567</a></p>
+    <!-- 외부사이트 신뢰성 링크 -->
+    <p style="font-size: 0.8em; margin-top: 20px;">
+      <a href="https://namu.wiki/w/%ED%83%9C%EC%95%84%EB%B3%B4%ED%97%98" target="_blank">나무위키: 태아보험 정보</a> |
+      <a href="https://www.e-childcare.go.kr/main/main.jsp" target="_blank">아이사랑 육아포털</a> |
+      <a href="https://www.mohw.go.kr/react/index.jsp" target="_blank">보건복지부 (고위험 임신 관련 정책)</a> |
+      <a href="https://www.kostat.go.kr/portal/korea/index.action" target="_blank">통계청 (출산율 및 인구 통계)</a>
+    </p>
+  </footer>
+
+  
